@@ -3,13 +3,13 @@ package com.example.service;
 import java.util.List;
 import java.util.Scanner;
 
-import com.example.DAO.veiculoDAO;
-import com.example.model.veiculo;
+import com.example.DAO.VeiculoDAO;
+import com.example.model.Veiculo;
 
 public class VeiculoService {
-    private veiculoDAO veiculoDAO;
+    private VeiculoDAO veiculoDAO;
 
-    public VeiculoService(veiculoDAO veiculoDAO) {
+    public VeiculoService(VeiculoDAO veiculoDAO) {
         this.veiculoDAO = veiculoDAO;
     }
 
@@ -219,8 +219,8 @@ public class VeiculoService {
 
     public void listarVeiculos() {
         System.out.println("Lista de veículos:");
-        List<veiculo> veiculos = veiculoDAO.listarVeiculos();
-        for (veiculo veiculo : veiculos) {
+        List<Veiculo> veiculos = veiculoDAO.listarVeiculos();
+        for (Veiculo veiculo : veiculos) {
             System.out.println(veiculo);
         }
 

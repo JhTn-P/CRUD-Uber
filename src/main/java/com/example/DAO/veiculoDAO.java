@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.connection.ConnectionFactory;
-import com.example.model.veiculo;
+import com.example.model.Veiculo;
 
-public class veiculoDAO {
+public class VeiculoDAO {
     private Connection conexao;
 
-    public veiculoDAO() {
+    public VeiculoDAO() {
         try {
             this.conexao = ConnectionFactory.getConnection();
         } catch (SQLException e) {
@@ -41,9 +41,9 @@ public class veiculoDAO {
         }
     }
 
-    public List<veiculo> listarVeiculos() {
-        List<veiculo> veiculos = new ArrayList<>();
-        String sql = "SELECT * FROM Veiculos";
+    public List<Veiculo> listarVeiculos() {
+        List<Veiculo> listarVeiculos = new ArrayList<>();
+        String sql = "SELECT * FROM veiculos";
         try (PreparedStatement statement = conexao.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -55,15 +55,15 @@ public class veiculoDAO {
                 String cor = resultSet.getString("cor");
                 String tipo_combust = resultSet.getString("tipo_combust");
                 int potencia_motor = resultSet.getInt("potencia_motor");
-                veiculo veiculo = new veiculo(placa, marca, modelo, ano_fabric, capacidade_pass, cor, tipo_combust,
+                Veiculo veiculo = new Veiculo(placa, marca, modelo, ano_fabric, capacidade_pass, cor, tipo_combust,
                         potencia_motor);
-                veiculos.add(veiculo);
+                listarVeiculos.add(veiculo);
             }
         } catch (SQLException e) {
             System.out.println("Erro ao listar veículos:");
             e.printStackTrace();
         }
-        return veiculos;
+        return listarVeiculos;
     }
 
     public void atualizarVeiculo(String placa, String nova_marca, String novo_modelo, int novo_ano_fabric,

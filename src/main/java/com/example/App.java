@@ -2,13 +2,17 @@ package com.example;
 
 import java.util.Scanner;
 
-import com.example.DAO.veiculoDAO;
+import com.example.DAO.PessoasDAO;
+import com.example.DAO.VeiculoDAO;
+import com.example.service.PessoasService;
 import com.example.service.VeiculoService;
 
 public class App {
     public static void main(String[] args) {
-        veiculoDAO veiculoDAO = new veiculoDAO();
+        VeiculoDAO veiculoDAO = new VeiculoDAO();
+        PessoasDAO pessoasDAO = new PessoasDAO();
         VeiculoService veiculoService = new VeiculoService(veiculoDAO);
+        PessoasService pessoasService = new PessoasService(pessoasDAO);
         Scanner scanner = new Scanner(System.in);
         int opcao;
 
@@ -33,32 +37,31 @@ public class App {
                     veiculoService.gerenciarVeiculos(scanner);
                     break;
                 case 2:
-                    // gerenciarPessoas(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    pessoasService.gerenciarPessoas(scanner);
                     break;
                 case 3:
                     // gerenciarPassageiros(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println(".");
                     break;
                 case 4:
                     // gerenciarMotorista(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println(".");
                     break;
                 case 5:
                     // gerenciarProprietarios(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println(".");
                     break;
                 case 6:
                     // gerenciarViagem(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println(".");
                     break;
                 case 7:
                     // gerenciarMotoristaDoVeiculo(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println(".");
                     break;
                 case 8:
                     // gerenciarTipoDePagamento(scanner);
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println(".");
                     break;
                 case 9:
                     System.out.println("Saindo...");

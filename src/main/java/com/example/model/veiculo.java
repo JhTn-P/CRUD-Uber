@@ -1,6 +1,6 @@
 package com.example.model;
 
-public class veiculo {
+public class Veiculo {
     private String placa;
     private String marca;
     private String modelo;
@@ -10,7 +10,7 @@ public class veiculo {
     private String tipo_combust;
     private int potencia_motor;
 
-    public veiculo(String placa, String marca, String modelo, int ano_fabric, int capacidade_pass, String cor,
+    public Veiculo(String placa, String marca, String modelo, int ano_fabric, int capacidade_pass, String cor,
             String tipo_combust, int potencia_motor) {
         this.placa = placa;
         this.marca = marca;
