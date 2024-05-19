@@ -4,6 +4,7 @@ import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,10 @@ public class PessoasDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public PessoasDAO(Connection conexao) {
+        this.conexao = conexao;
     }
 
     public void inserirPessoa(Pessoas pessoas){
@@ -84,10 +89,10 @@ public class PessoasDAO {
         return listarPessoas;
     }
 
-    public void excluirPessoa(String cpf_pessoa) {
+    public void excluirPessoa(long cpf_pessoa) {
         String sql = "DELETE FROM pessoas WHERE cpf_pessoa = ?";
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
-            preparedStatement.setString(1, cpf_pessoa);
+            preparedStatement.setLong(1, cpf_pessoa);
             int linhaAfetada = preparedStatement.executeUpdate();
             if(linhaAfetada > 0) {
                 System.out.println("Exlusão de pessoa concluída!");
@@ -98,5 +103,21 @@ public class PessoasDAO {
             System.out.println("Erro ao tentar excluir pessoa.");
             e.printStackTrace();
         }
+    }
+
+    public boolean verificarPessoa(long cpf_pessoa) {
+        String sql = "SELECT COUNT(*) FROM pessoas WHERE cpf_pessoa = ?";
+        try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+            statement.setLong(1, cpf_pessoa);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+        
     }
 }

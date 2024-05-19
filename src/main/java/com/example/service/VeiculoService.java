@@ -16,11 +16,11 @@ public class VeiculoService {
     public void gerenciarVeiculos(Scanner scanner) {
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - INSERIR");
-            System.out.println("2 - ALTERAR");
-            System.out.println("3 - LISTAR");
-            System.out.println("4 - DELETAR");
-            System.out.println("5 - VOLTAR");
+            System.out.println("1 - Inserir Veículo");
+            System.out.println("2 - Alterar Veículo");
+            System.out.println("3 - Listar Veículo");
+            System.out.println("4 - Deletar Veículo");
+            System.out.println("0 - Voltar");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -38,7 +38,7 @@ public class VeiculoService {
                 case 4:
                     deletarVeiculo(scanner);
                     break;
-                case 5:
+                case 0:
                     return; // Voltar ao menu de seleção de tabela
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -147,7 +147,7 @@ public class VeiculoService {
 
         System.out.println("Insira os novos dados do veículo:");
 
-        System.out.print("Nova Placa (máximo 7 caracteres): ");
+        System.out.print("Placa (máximo 7 caracteres): ");
         String novaPlaca = scanner.nextLine();
         if (novaPlaca.length() > 7) {
             System.out.println("A placa deve ter no máximo 7 caracteres.");

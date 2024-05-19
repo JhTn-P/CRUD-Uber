@@ -20,7 +20,7 @@ public class PessoasService {
             System.out.println("2 - ALTERAR");
             System.out.println("3 - LISTAR");
             System.out.println("4 - DELETAR");
-            System.out.println("5 - VOLTAR");
+            System.out.println("0 - VOLTAR");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -38,7 +38,7 @@ public class PessoasService {
                 case 4:
                     excluirPessoa(scanner);
                     break;
-                case 5:
+                case 0:
                     return; // Voltar ao menu de seleção de tabela
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -93,40 +93,43 @@ public class PessoasService {
         long cpfPessoa = scanner.nextLong();
         scanner.nextLine();
 
-        System.out.print("Novo Nome: ");
-        String nome = scanner.nextLine();
-        if (nome.length() > 50 || nome.matches(".*\\d.*") || nome.trim().isEmpty()) {
-            System.out.println("Nome inválido. Deve ter no máximo 50 caracteres e não conter números.");
-            return;
+        if(pessoasDAO.verificarPessoa(cpfPessoa)) {
+            System.out.print("Novo Nome: ");
+            String nome = scanner.nextLine();
+            if (nome.length() > 50 || nome.matches(".*\\d.*") || nome.trim().isEmpty()) {
+                System.out.println("Nome inválido. Deve ter no máximo 50 caracteres e não conter números.");
+                return;
+            }
+    
+            System.out.print("Novo Endereço: ");
+            String endereco = scanner.nextLine();
+            if (endereco.length() > 50) {
+                System.out.println("Endereço inválido.");
+                return;
+            }
+    
+            System.out.print("Novo Telefone: ");
+            long telefone = scanner.nextLong();
+            scanner.nextLine();
+    
+            System.out.print("Novo Sexo (F/M): ");
+            String sexo = scanner.nextLine().toUpperCase();
+            if (!sexo.matches("[FM]")) {
+                System.out.println("Inválido.");
+                return;
+            }
+    
+            System.out.print("Novo Email: ");
+            String email = scanner.nextLine();
+            if (email.length() > 30) {
+                System.out.println("Email inválido.");
+                return;
+            }
+            Pessoas novaPessoa = new Pessoas(cpfPessoa, nome, endereco, telefone, sexo, email);
+            pessoasDAO.editarPessoa(cpfPessoa, novaPessoa);
+        } else {
+            System.out.println("Pessoa não encontrada.");
         }
-
-        System.out.print("Novo Endereço: ");
-        String endereco = scanner.nextLine();
-        if (endereco.length() > 50) {
-            System.out.println("Endereço inválido.");
-            return;
-        }
-
-        System.out.print("Novo Telefone: ");
-        long telefone = scanner.nextLong();
-        scanner.nextLine();
-
-        System.out.print("Novo Sexo (F/M): ");
-        String sexo = scanner.nextLine().toUpperCase();
-        if (!sexo.matches("[FM]")) {
-            System.out.println("Inválido.");
-            return;
-        }
-
-        System.out.print("Novo Email: ");
-        String email = scanner.nextLine();
-        if (email.length() > 30) {
-            System.out.println("Email inválido.");
-            return;
-        }
-
-        Pessoas novaPessoa = new Pessoas(cpfPessoa, nome, endereco, telefone, sexo, email);
-        pessoasDAO.editarPessoa(cpfPessoa, novaPessoa);
     }
 
     public void listarPessoas() {
@@ -138,11 +141,7 @@ public class PessoasService {
 
     public void excluirPessoa(Scanner scanner) {
         System.out.print("CPF: ");
-        String cpfPessoa = scanner.nextLine();
-        if (!cpfPessoa.matches("\\d{11}")) {
-            System.out.println("CPF inválido.");
-            return;
-        }
+        long cpfPessoa = scanner.nextLong();
 
         pessoasDAO.excluirPessoa(cpfPessoa);
     }

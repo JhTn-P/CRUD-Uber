@@ -13,6 +13,10 @@ import com.example.model.Veiculo;
 public class VeiculoDAO {
     private Connection conexao;
 
+    public VeiculoDAO(Connection conexao) {
+        this.conexao = conexao;
+    }
+
     public VeiculoDAO() {
         try {
             this.conexao = ConnectionFactory.getConnection();
