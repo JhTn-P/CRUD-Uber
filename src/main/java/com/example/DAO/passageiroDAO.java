@@ -11,10 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class passageiroDAO {
+public class PassageiroDAO {
     private Connection conexao;
 
-    public passageiroDAO() {
+    public PassageiroDAO() {
         try {
             this.conexao = ConnectionFactory.getConnection();
         } catch (SQLException e) {
@@ -22,8 +22,12 @@ public class passageiroDAO {
         }
     }
 
+    public PassageiroDAO(Connection conexao) {
+        this.conexao = conexao;
+    }
+
     public void inserirPassageiro(long cpf_passag, String cartao_cred, String bandeira_cartao, String cidade_orig) {
-        String sql = "INSERT INTO passageiro (cpf_passag, cartao_cred, bandeira_cartao, cidade_orig) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO passageiros (cpf_passag, cartao_cred, bandeira_cartao, cidade_orig) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_passag);
             statement.setString(2, cartao_cred);
@@ -39,14 +43,14 @@ public class passageiroDAO {
 
     public List<passageiro> listarPassageiro() {
         List<passageiro> passageiros = new ArrayList<>();
-        String sql = "SELECT * FROM passageiro";
+        String sql = "SELECT * FROM passageiros";
         try (PreparedStatement statement = conexao.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                long cpf_passag = resultSet.getLong("Cpf_passag");
-                String cartao_cred = resultSet.getString("Cartao_cred");
-                String bandeira_cartao = resultSet.getString("Bandeira_cartao");
-                String cidade_orig = resultSet.getString("Cidade_orig");
+                long cpf_passag = resultSet.getLong("cpf_passag");
+                String cartao_cred = resultSet.getString("cartao_cred");
+                String bandeira_cartao = resultSet.getString("bandeira_cartao");
+                String cidade_orig = resultSet.getString("cidade_orig");
 
                 passageiro passageiro = new passageiro(cpf_passag,cartao_cred,bandeira_cartao,cidade_orig);
                 passageiros.add(passageiro);
@@ -59,7 +63,7 @@ public class passageiroDAO {
     }
 
     public void atualizarPassageiro(long cpf_passag, String cartao_cred, String bandeira_cartao, String cidade_orig) {
-        String sql = "UPDATE passageiro SET cartao_cred = ?, bandeira_cartao = ?, cidade_orig = ? WHERE cpf_passag = ?";
+        String sql = "UPDATE passageiros SET cartao_cred = ?, bandeira_cartao = ?, cidade_orig = ? WHERE cpf_passag = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setString(1, cartao_cred);
             statement.setString(2, bandeira_cartao);
@@ -79,7 +83,7 @@ public class passageiroDAO {
     }
 
     public void excluirPassageiro(long cpf_passag) {
-        String sql = "DELETE FROM passageiro WHERE cpf_passag = ?";
+        String sql = "DELETE FROM passageiros WHERE cpf_passag = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_passag);
             int linhasAfetadas = statement.executeUpdate();
@@ -95,7 +99,7 @@ public class passageiroDAO {
     }
 
     public boolean existePassageiro(long cpf_passag) {
-        String sql = "SELECT COUNT(*) AS total FROM passageiro WHERE cpf_passag = ?";
+        String sql = "SELECT COUNT(*) AS total FROM passageiros WHERE cpf_passag = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_passag);
             try (ResultSet resultSet = statement.executeQuery()) {

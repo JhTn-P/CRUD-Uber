@@ -52,7 +52,6 @@ public class MotoristasService {
         }
     }
 
-
     public void inserirMotorista(Scanner scanner) {
         System.out.print("CPF do Motorista: ");
         long cpfMotorista = scanner.nextLong();

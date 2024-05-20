@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.DAO.PessoasDAO;
 import com.example.DAO.ProprietarioDAO;
 import com.example.model.Proprietario;
 import com.example.model.passageiro;
@@ -10,9 +11,11 @@ import java.util.Scanner;
 public class PropietarioService {
 
     ProprietarioDAO propietarioDAO = new ProprietarioDAO();
+    PessoasDAO pessoasDAO = new PessoasDAO();
 
-    public PropietarioService(ProprietarioDAO propietarioDAO) {
+    public PropietarioService(ProprietarioDAO propietarioDAO, PessoasDAO pessoasDAO) {
         this.propietarioDAO = propietarioDAO;
+        this.pessoasDAO = pessoasDAO;
     }
     public void gerenciarPropietario(Scanner scanner) {
         while (true) {
@@ -54,15 +57,18 @@ public class PropietarioService {
 
         System.out.print("Cpf (máximo de 11 números): ");
         long cpf_prop = scanner.nextLong();
-        if(!propietarioDAO.existeProprietario(cpf_prop)) {
+        
+        if (!pessoasDAO.verificarPessoa(cpf_prop)) {
+            System.out.println("Erro: CPF não encontrado na tabela PESSOAS.");
+            return;
+        }
 
-
-            System.out.print("Cartão de Crédito (máximo de 15 caracteres): ");
+            System.out.print("CNH (máximo de 15 caracteres): ");
             String cnh_prop = scanner.next();
 
             while(cnh_prop.length() > 15) {
                 System.out.println("Limite de caracteres excedido.");
-                System.out.print("Cartão de Crédito (máximo de 15 caracteres): ");
+                System.out.print("CNH (máximo de 15 caracteres): ");
                 cnh_prop = scanner.next();
             }
 
@@ -72,9 +78,10 @@ public class PropietarioService {
             System.out.print("Agencia: ");
             int agencia_prop = scanner.nextInt();
 
+            System.out.print("Conta:");
             int conta_prop = scanner.nextInt();
             propietarioDAO.inserirProprietario(cpf_prop, cnh_prop, banco_prop, agencia_prop, conta_prop);
-        }else System.out.print("Digite outro CPF, esse já existe!!! ");
+        
     }
 
     public void alterarProprietario(Scanner scanner) {

@@ -14,15 +14,19 @@ import java.util.List;
 public class ProprietarioDAO {
     private Connection conexao;
 
-    public ProprietarioDAO(){
+    public ProprietarioDAO() {
         try {
             this.conexao = ConnectionFactory.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public ProprietarioDAO(Connection conexao) {
+        this.conexao = conexao;
+    }
     public void inserirProprietario(long cpf_prop, String cnh_prop, int banco_prop, int agencia_prop, int conta_prop) {
-        String sql = "INSERT INTO proprietario (cpf_prop, cnh_prop, banco_prop, agencia_prop, conta_prop) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO proprietarios (cpf_prop, cnh_prop, banco_prop, agencia_prop, conta_prop) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_prop);
             statement.setString(2, cnh_prop);
@@ -38,7 +42,7 @@ public class ProprietarioDAO {
     }
     public List<Proprietario> listarPropritario() {
         List<Proprietario> propietarios = new ArrayList<>();
-        String sql = "SELECT * FROM proprietario";
+        String sql = "SELECT * FROM proprietarios";
         try (PreparedStatement statement = conexao.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -57,7 +61,7 @@ public class ProprietarioDAO {
         return propietarios;
     }
     public void atualizarProprietario(long cpf_prop, String cnh_prop, int banco_prop, int agencia_prop, int conta_prop) {
-        String sql = "UPDATE proprietario SET cnh_prop = ?, banco_prop = ?, agencia_prop = ?, conta_prop = ? WHERE cpf_prop = ?";
+        String sql = "UPDATE proprietarios SET cnh_prop = ?, banco_prop = ?, agencia_prop = ?, conta_prop = ? WHERE cpf_prop = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setString(1, cnh_prop);
             statement.setInt(2, banco_prop);
@@ -76,7 +80,7 @@ public class ProprietarioDAO {
         }
     }
     public void excluirProprietario(long cpf_prop) {
-        String sql = "DELETE FROM proprietario WHERE cpf_prop = ?";
+        String sql = "DELETE FROM proprietarios WHERE cpf_prop = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_prop);
             int linhasAfetadas = statement.executeUpdate();
@@ -91,7 +95,7 @@ public class ProprietarioDAO {
         }
     }
     public boolean existeProprietario(long cpf_prop) {
-        String sql = "SELECT COUNT(*) AS total FROM proprietario WHERE cpf_prop = ?";
+        String sql = "SELECT COUNT(*) AS total FROM proprietarios WHERE cpf_prop = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_prop);
             try (ResultSet resultSet = statement.executeQuery()) {

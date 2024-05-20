@@ -1,6 +1,7 @@
 package com.example.service;
 
-import com.example.DAO.passageiroDAO;
+import com.example.DAO.PassageiroDAO;
+import com.example.DAO.PessoasDAO;
 import com.example.model.passageiro;
 
 
@@ -9,10 +10,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PassageiroService {
-    private passageiroDAO passageiroDAO;
+    private PassageiroDAO passageiroDAO;
+    private PessoasDAO pessoasDAO;
 
-    public PassageiroService(passageiroDAO passageiroDAO) {
+    public PassageiroService(PassageiroDAO passageiroDAO, PessoasDAO pessoasDAO) {
         this.passageiroDAO = passageiroDAO;
+        this.pessoasDAO = pessoasDAO;
     }
 
     public void gerenciarPassageiro(Scanner scanner) {
@@ -55,7 +58,10 @@ public class PassageiroService {
 
         System.out.print("Cpf (máximo de 11 números): ");
         long cpf_passag = scanner.nextLong();
-        if(!passageiroDAO.existePassageiro(cpf_passag)) {
+        if (!pessoasDAO.verificarPessoa(cpf_passag)) {
+            System.out.println("Erro: CPF não encontrado na tabela PESSOAS.");
+            return;
+        }
 
             scanner.nextLine();
             System.out.print("Cartão de Crédito (máximo de 20 caracteres): ");
@@ -77,7 +83,6 @@ public class PassageiroService {
 
             }
             passageiroDAO.inserirPassageiro(cpf_passag, cartao_cred, bandeira_cartao, cidade_orig);
-        }else System.out.print("Digite outro CPF, esse já existe!!! ");
     }
 
     public void alterarPassageiro(Scanner scanner) {
@@ -119,8 +124,8 @@ public class PassageiroService {
 
     public void listarPassageiro() {
         System.out.println("Lista de Passageiros:");
-        List<passageiro> passasgeiros = passageiroDAO.listarPassageiro();
-        for (passageiro passageiro : passasgeiros) {
+        List<passageiro> passageiros = passageiroDAO.listarPassageiro();
+        for (passageiro passageiro : passageiros) {
             System.out.println(passageiro);
         }
 

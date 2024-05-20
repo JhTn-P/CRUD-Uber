@@ -4,12 +4,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.example.DAO.MotoristaVeiculoDAO;
 import com.example.DAO.MotoristasDAO;
+import com.example.DAO.PassageiroDAO;
 import com.example.DAO.PessoasDAO;
+import com.example.DAO.ProprietarioDAO;
 import com.example.DAO.VeiculoDAO;
 import com.example.connection.ConnectionFactory;
+import com.example.service.MotoristaVeiculoService;
 import com.example.service.MotoristasService;
+import com.example.service.PassageiroService;
 import com.example.service.PessoasService;
+import com.example.service.PropietarioService;
 import com.example.service.VeiculoService;
 
 public class App {
@@ -22,15 +28,21 @@ public class App {
             conexao = ConnectionFactory.getConnection();
 
             // Instanciando os DAOs
+            ProprietarioDAO proprietarioDAO = new ProprietarioDAO(conexao);
             VeiculoDAO veiculoDAO = new VeiculoDAO(conexao);
             PessoasDAO pessoasDAO = new PessoasDAO(conexao);
             MotoristasDAO motoristasDAO = new MotoristasDAO(conexao);
+            PassageiroDAO  passageiroDAO = new PassageiroDAO(conexao);
+            MotoristaVeiculoDAO motoristaVeiculoDAO = new MotoristaVeiculoDAO(conexao);
             // Adicione aqui outros DAOs conforme necessário
 
             // Instanciando os serviços
+            PropietarioService propietarioService = new PropietarioService(proprietarioDAO, pessoasDAO);
+            PassageiroService passageiroService = new PassageiroService(passageiroDAO, pessoasDAO);
             VeiculoService veiculoService = new VeiculoService(veiculoDAO);
             PessoasService pessoasService = new PessoasService(pessoasDAO);
             MotoristasService motoristasService = new MotoristasService(motoristasDAO, pessoasDAO);
+            MotoristaVeiculoService motoristaVeiculoService = new MotoristaVeiculoService(motoristaVeiculoDAO, motoristasDAO, veiculoDAO);
             // Adicione aqui outros serviços conforme necessário
 
             while (true) {
@@ -59,8 +71,24 @@ public class App {
                     case 2:
                         pessoasService.gerenciarPessoas(scanner);
                         break;
+
+                    case 3:
+                        passageiroService.gerenciarPassageiro(scanner);
+                        break;
+
                     case 4:
                         motoristasService.gerenciarMotoristas(scanner);
+                        break;
+                    
+                    case 5:
+                        propietarioService.gerenciarPropietario(scanner);
+                        break;
+
+                    case 6:
+                        break;
+
+                    case 7:
+                        motoristaVeiculoService.gerenciarMotoristasVeiculos(scanner);
                         break;
                     // Adicione aqui os cases para as outras tabelas
                     default:
