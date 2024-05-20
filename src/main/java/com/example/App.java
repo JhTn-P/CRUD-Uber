@@ -10,6 +10,7 @@ import com.example.DAO.PassageiroDAO;
 import com.example.DAO.PessoasDAO;
 import com.example.DAO.ProprietarioDAO;
 import com.example.DAO.VeiculoDAO;
+import com.example.DAO.ViagemDAO;
 import com.example.connection.ConnectionFactory;
 import com.example.service.MotoristaVeiculoService;
 import com.example.service.MotoristasService;
@@ -17,6 +18,7 @@ import com.example.service.PassageiroService;
 import com.example.service.PessoasService;
 import com.example.service.PropietarioService;
 import com.example.service.VeiculoService;
+import com.example.service.ViagemService;
 
 public class App {
     public static void main(String[] args) {
@@ -34,6 +36,7 @@ public class App {
             MotoristasDAO motoristasDAO = new MotoristasDAO(conexao);
             PassageiroDAO  passageiroDAO = new PassageiroDAO(conexao);
             MotoristaVeiculoDAO motoristaVeiculoDAO = new MotoristaVeiculoDAO(conexao);
+            ViagemDAO viagemDAO = new ViagemDAO(conexao);
             // Adicione aqui outros DAOs conforme necessário
 
             // Instanciando os serviços
@@ -43,6 +46,7 @@ public class App {
             PessoasService pessoasService = new PessoasService(pessoasDAO);
             MotoristasService motoristasService = new MotoristasService(motoristasDAO, pessoasDAO);
             MotoristaVeiculoService motoristaVeiculoService = new MotoristaVeiculoService(motoristaVeiculoDAO, motoristasDAO, veiculoDAO);
+            ViagemService viagemService = new ViagemService(viagemDAO, passageiroDAO, motoristaVeiculoDAO, veiculoDAO);
             // Adicione aqui outros serviços conforme necessário
 
             while (true) {
@@ -85,6 +89,7 @@ public class App {
                         break;
 
                     case 6:
+                        viagemService.gerenciarViagem(scanner);
                         break;
 
                     case 7:
