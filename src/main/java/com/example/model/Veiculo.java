@@ -11,7 +11,7 @@ public class Veiculo {
     private int potencia_motor;
 
     public Veiculo(String placa, String marca, String modelo, int ano_fabric, int capacidade_pass, String cor,
-            String tipo_combust, int potencia_motor) {
+                   String tipo_combust, int potencia_motor) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;

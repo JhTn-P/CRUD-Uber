@@ -120,7 +120,7 @@ public class VeiculoService {
 
         System.out.print("Tipo de Combustível: ");
         String tipoCombust = scanner.nextLine().toUpperCase(); // Convertendo para maiúsculas para simplificar a
-                                                               // validação
+        // validação
         if (!"GADF".contains(tipoCombust) && tipoCombust.length() > 1) {
             System.out.println("O tipo de combustível deve ser G, A, D ou F.");
             return;
