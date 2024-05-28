@@ -16,11 +16,11 @@ public class PessoasService {
     public void gerenciarPessoas(Scanner scanner) {
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - INSERIR");
-            System.out.println("2 - ALTERAR");
-            System.out.println("3 - LISTAR");
-            System.out.println("4 - DELETAR");
-            System.out.println("0 - VOLTAR");
+            System.out.println("1 - Inserir pessoa");
+            System.out.println("2 - Alterar pessoa");
+            System.out.println("3 - Listar pessoa");
+            System.out.println("4 - Deletar pessoa");
+            System.out.println("0 - Voltar");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha

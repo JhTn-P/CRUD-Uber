@@ -19,6 +19,9 @@ public class Motoristas {
         this.conta_mot = conta_mot;
     }
 
+    /* Método sobrescrito para retornar uma representação em string do objeto Motoristas,
+    quando os dados da tabela motoristas for listado será exibido dessa maneira
+    */ 
     @Override
     public String toString() {
         return"Motorista: " + 
@@ -29,6 +32,7 @@ public class Motoristas {
         ", conta: " + conta_mot;
     }
 
+    //Getters e setters para acessar e modificar os atributos da tabela
     public long getCpf_motorista() {
         return cpf_motorista;
     }

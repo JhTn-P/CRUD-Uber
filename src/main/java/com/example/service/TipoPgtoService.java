@@ -17,11 +17,11 @@ public class TipoPgtoService {
     public void gerenciarPassageiro(Scanner scanner) {
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - INSERIR");
-            System.out.println("2 - ALTERAR");
-            System.out.println("3 - LISTAR");
-            System.out.println("4 - DELETAR");
-            System.out.println("5 - VOLTAR");
+            System.out.println("1 - Inserir tipo de pagamento");
+            System.out.println("2 - Alterar tipo de pagamento");
+            System.out.println("3 - Listar tipo de pagamento");
+            System.out.println("4 - Deletar tipo de pagamento");
+            System.out.println("0 - Voltar");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -39,7 +39,7 @@ public class TipoPgtoService {
                 case 4:
                     excluirPagamento(scanner);
                     break;
-                case 5:
+                case 0:
                     return; // Voltar ao menu de seleção de tabela
                 default:
                     System.out.println("Opção inválida. Tente novamente.");

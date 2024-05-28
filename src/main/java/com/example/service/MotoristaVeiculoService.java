@@ -49,8 +49,11 @@ public class MotoristaVeiculoService {
                 case 4:
                     deletarMotoristaVeiculo(scanner);
                     break;
+                case 0:
+                    return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
+                    break;
             }
         }
     }

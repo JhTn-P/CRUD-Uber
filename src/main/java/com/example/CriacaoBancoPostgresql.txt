@@ -1,0 +1,77 @@
+CREATE TABLE IF NOT EXISTS veiculos(
+	placa CHARACTER VARYING(7) NOT NULL PRIMARY KEY,
+	marca CHARACTER VARYING(30) NOT NULL,
+	modelo CHARACTER VARYING(30) NOT NULL,
+	ano_fabric INTEGER NOT NULL,
+	capacidade_pass INTEGER NOT NULL,
+	cor CHARACTER VARYING(30) NOT NULL,
+	tipo_combust CHARACTER VARYING(1) NOT NULL,
+	potencia_motor INTEGER
+)
+
+CREATE TABLE IF NOT EXISTS pessoas(
+	cpf_pessoa BIGINT NOT NULL PRIMARY KEY,
+	nome CHARACTER VARYING(50) NOT NULL,
+	endereco CHARACTER VARYING(50),
+	telefone INTEGER,
+	sexo CHARACTER VARYING(1),
+	email CHARACTER VARYING(30)
+)
+
+CREATE TABLE IF NOT EXISTS passageiros(
+	cpf_passag bigint NOT NULL PRIMARY KEY,
+	cartao_cred CHARACTER VARYING(20),
+	bandeira_cartao CHARACTER VARYING(20),
+	cidade_orig CHARACTER VARYING(30),
+	FOREIGN KEY (cpf_passag) REFERENCES pessoas(cpf_pessoa)
+)
+
+CREATE TABLE IF NOT EXISTS motoristas(
+	cpf_motorista BIGINT NOT NULL PRIMARY KEY,
+	CNH CHARACTER VARYING(15) NOT NULL,
+	banco_mot INTEGER NOT NULL,
+	agencia_mot INTEGER NOT NULL,
+	conta_mot INTEGER NOT NULL,
+	FOREIGN KEY (cpf_motorista) REFERENCES pessoas(cpf_pessoa)
+)
+
+CREATE TABLE IF NOT EXISTS proprietarios(
+	cpf_prop BIGINT NOT NULL PRIMARY KEY,
+	CNH_prop CHARACTER VARYING(15) NOT NULL,
+	banco_prop INTEGER NOT NULL,
+	agencia_prop INTEGER NOT NULL,
+	conta_prop INTEGER NOT NULL,
+	FOREIGN KEY (cpf_prop) REFERENCES pessoas(cpf_pessoa)
+)
+
+CREATE TABLE IF NOT EXISTS viagem(
+	cpf_pass_viag BIGINT NOT NULL,
+	cpf_mot_viag BIGINT NOT NULL,
+	placa_veic_viag CHARACTER VARYING(7) NOT NULL,
+	local_orig_viag CHARACTER VARYING(30),
+	local_dest_viag CHARACTER VARYING(30),
+	dt_hora_inicio DATE NOT NULL,
+	dt_hora_fim DATE NOT NULL,
+	qtde_pass INTEGER,
+	forma_pgta CHARACTER VARYING,
+	valor_pgta NUMERIC(10, 2),
+	cancelam_mot CHARACTER VARYING(1),
+	cancelam_pass CHARACTER VARYING(1),
+	PRIMARY KEY(cpf_pass_viag, cpf_mot_viag, placa_veic_viag, dt_hora_inicio),
+	FOREIGN KEY (cpf_pass_viag) REFERENCES passageiros(cpf_passag),
+	FOREIGN KEY (cpf_mot_viag) REFERENCES motoristas(cpf_motorista),
+	FOREIGN KEY (placa_veic_viag) REFERENCES veiculos(placa)
+)
+
+CREATE TABLE IF NOT EXISTS motorista_veiculo(
+	cpf_motorista BIGINT NOT NULL,
+	placa_veiculo CHARACTER VARYING NOT NULL,
+	PRIMARY KEY (cpf_motorista, placa_veiculo),
+	FOREIGN KEY (cpf_motorista) REFERENCES motoristas(cpf_motorista),
+	FOREIGN KEY (placa_veiculo) REFERENCES veiculos(placa)
+)
+
+CREATE TABLE IF NOT EXISTS tipo_pgto(
+	cod_pagto INTEGER NOT NULL PRIMARY KEY,
+	desc_pagto CHARACTER VARYING(20) NOT NULL
+)

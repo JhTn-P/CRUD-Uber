@@ -2,6 +2,7 @@ package com.example;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.example.DAO.MotoristaVeiculoDAO;
@@ -13,6 +14,7 @@ import com.example.DAO.TipoPagtoDAO;
 import com.example.DAO.VeiculoDAO;
 import com.example.DAO.ViagemDAO;
 import com.example.connection.ConnectionFactory;
+import com.example.model.ViagemDetalhes;
 import com.example.service.MotoristaVeiculoService;
 import com.example.service.MotoristasService;
 import com.example.service.PassageiroService;
@@ -20,15 +22,18 @@ import com.example.service.PessoasService;
 import com.example.service.PropietarioService;
 import com.example.service.TipoPgtoService;
 import com.example.service.VeiculoService;
+import com.example.service.ViagemDetalhesService;
 import com.example.service.ViagemService;
+import com.example.util.ResultadoBuscaViagens;
 
 public class App {
     public static void main(String[] args) {
-        
+
         Scanner scanner = new Scanner(System.in);
 
         Connection conexao = null;
         try {
+            // Estabelecimento da conexão com o banco de dados
             conexao = ConnectionFactory.getConnection();
 
             // Instanciando os DAOs
@@ -36,7 +41,7 @@ public class App {
             VeiculoDAO veiculoDAO = new VeiculoDAO(conexao);
             PessoasDAO pessoasDAO = new PessoasDAO(conexao);
             MotoristasDAO motoristasDAO = new MotoristasDAO(conexao);
-            PassageiroDAO  passageiroDAO = new PassageiroDAO(conexao);
+            PassageiroDAO passageiroDAO = new PassageiroDAO(conexao);
             MotoristaVeiculoDAO motoristaVeiculoDAO = new MotoristaVeiculoDAO(conexao);
             ViagemDAO viagemDAO = new ViagemDAO(conexao);
             TipoPagtoDAO tipoPagtoDAO = new TipoPagtoDAO(conexao);
@@ -48,9 +53,11 @@ public class App {
             VeiculoService veiculoService = new VeiculoService(veiculoDAO);
             PessoasService pessoasService = new PessoasService(pessoasDAO);
             MotoristasService motoristasService = new MotoristasService(motoristasDAO, pessoasDAO);
-            MotoristaVeiculoService motoristaVeiculoService = new MotoristaVeiculoService(motoristaVeiculoDAO, motoristasDAO, veiculoDAO);
+            MotoristaVeiculoService motoristaVeiculoService = new MotoristaVeiculoService(motoristaVeiculoDAO,
+                    motoristasDAO, veiculoDAO);
             ViagemService viagemService = new ViagemService(viagemDAO, passageiroDAO, motoristaVeiculoDAO, veiculoDAO);
             TipoPgtoService tipoPgtoService = new TipoPgtoService(tipoPagtoDAO);
+            ViagemDetalhesService viagemDetalhesService = new ViagemDetalhesService(viagemDAO);
             // Adicione aqui outros serviços conforme necessário
 
             while (true) {
@@ -63,6 +70,7 @@ public class App {
                 System.out.println("6 - Viagem");
                 System.out.println("7 - Motorista do veículo");
                 System.out.println("8 - Tipo de pagamento");
+                System.out.println("9 - Buscar viagens por marca e data");
                 System.out.println("0 - Sair");
 
                 int escolhaTabela = scanner.nextInt();
@@ -87,7 +95,7 @@ public class App {
                     case 4:
                         motoristasService.gerenciarMotoristas(scanner);
                         break;
-                    
+
                     case 5:
                         propietarioService.gerenciarPropietario(scanner);
                         break;
@@ -102,7 +110,12 @@ public class App {
 
                     case 8:
                         tipoPgtoService.gerenciarPassageiro(scanner);
-                        
+                        break;
+
+                    case 9:
+                        viagemDetalhesService.buscarViagensPorMarcaEData(scanner);
+                        break;
+
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
                 }

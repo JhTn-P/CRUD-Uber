@@ -21,11 +21,11 @@ public class PassageiroService {
     public void gerenciarPassageiro(Scanner scanner) {
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - INSERIR");
-            System.out.println("2 - ALTERAR");
-            System.out.println("3 - LISTAR");
-            System.out.println("4 - DELETAR");
-            System.out.println("5 - VOLTAR");
+            System.out.println("1 - Inserir passageiro");
+            System.out.println("2 - Alterar passageiro");
+            System.out.println("3 - Listar Passageiro");
+            System.out.println("4 - Deletar Passageiro");
+            System.out.println("0 - Voltar");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -43,8 +43,8 @@ public class PassageiroService {
                 case 4:
                     deletarPassageiro(scanner);
                     break;
-                case 5:
-                    return; // Voltar ao menu de seleção de tabela
+                case 0:
+                    return; 
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     break;

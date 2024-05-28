@@ -1,6 +1,5 @@
 package com.example.service;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,6 +16,7 @@ public class MotoristasService {
         this.pessoasDAO = pessoasDAO;
     }
 
+    // Método para exibir um menu de opções e permitir o usuário gerenciar a tabela motoristas
     public void gerenciarMotoristas(Scanner scanner) {
         while (true) {
             System.out.println("Escolha a operação:");
@@ -46,8 +46,11 @@ public class MotoristasService {
                 case 4:
                     deletarMotorista(scanner);
                     break;
+                case 0:
+                    return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
+                    break;
             }
         }
     }

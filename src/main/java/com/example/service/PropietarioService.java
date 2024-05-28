@@ -20,11 +20,11 @@ public class PropietarioService {
     public void gerenciarPropietario(Scanner scanner) {
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - INSERIR");
-            System.out.println("2 - ALTERAR");
-            System.out.println("3 - LISTAR");
-            System.out.println("4 - DELETAR");
-            System.out.println("5 - VOLTAR");
+            System.out.println("1 - Inserir proprietario");
+            System.out.println("2 - Alterar proprietario");
+            System.out.println("3 - Listar proprietario");
+            System.out.println("4 - Deletar proprietario");
+            System.out.println("0 - Voltar");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -42,7 +42,7 @@ public class PropietarioService {
                 case 4:
                     deletarProprietario(scanner);
                     break;
-                case 5:
+                case 0:
                     return; // Voltar ao menu de seleção de tabela
                 default:
                     System.out.println("Opção inválida. Tente novamente.");

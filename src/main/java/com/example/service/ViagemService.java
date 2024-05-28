@@ -4,8 +4,13 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.example.DAO.MotoristaVeiculoDAO;
 import com.example.DAO.MotoristasDAO;
@@ -20,6 +25,7 @@ public class ViagemService {
     private PassageiroDAO passageiroDAO;
     private MotoristaVeiculoDAO motoristaVeiculoDAO;
     private VeiculoDAO veiculoDAO;
+    private List<Viagem> viagens;
 
     public ViagemService(ViagemDAO viagemDAO, PassageiroDAO passageiroDAO, MotoristaVeiculoDAO motoristaVeiculoDAO,
             VeiculoDAO veiculoDAO) {
@@ -27,16 +33,17 @@ public class ViagemService {
         this.passageiroDAO = passageiroDAO;
         this.motoristaVeiculoDAO = motoristaVeiculoDAO;
         this.veiculoDAO = veiculoDAO;
+        this.viagens = viagemDAO.listarViagem();
     }
 
     public void gerenciarViagem(Scanner scanner) {
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - INSERIR");
-            System.out.println("2 - ALTERAR");
-            System.out.println("3 - LISTAR");
-            System.out.println("4 - DELETAR");
-            System.out.println("5 - VOLTAR");
+            System.out.println("1 - Inserir viagem");
+            System.out.println("2 - Alterar viagem");
+            System.out.println("3 - Listar viagem");
+            System.out.println("4 - Deletar viagem");
+            System.out.println("0 - Voltar");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -54,7 +61,7 @@ public class ViagemService {
                 case 4:
                     excluirViagem(scanner);
                     break;
-                case 5:
+                case 0:
                     return; // Voltar ao menu de seleção de tabela
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -309,4 +316,10 @@ public class ViagemService {
         // Agora você pode chamar o método no DAO para excluir a viagem
         viagemDAO.excluirViagem(cpf_pass_viag, cpf_mot_viag, placa_veic_viag, sqlDateInicio);
     }
+
+    public void adicionarViagem(Viagem viagem) {
+        viagens.add(viagem);
+    }
+
+    
 }
