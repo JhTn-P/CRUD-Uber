@@ -13,7 +13,7 @@ public class ViagemDetalhes {
     }
 
     public ViagemDetalhes(String marca, String placa, String localOrigem, String localDestino, String nomeMotorista,
-            String nomePassageiro) {
+            String nomePassageiro, double faturamento) {
         this.marca = marca;
         this.placa = placa;
         this.localOrigem = localOrigem;
@@ -81,6 +81,4 @@ public class ViagemDetalhes {
         ", nome do passageiro='" + nomePassageiro + '\'' +
         '}';
     }
-
-    
 }

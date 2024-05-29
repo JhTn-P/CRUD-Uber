@@ -15,6 +15,7 @@ import com.example.DAO.VeiculoDAO;
 import com.example.DAO.ViagemDAO;
 import com.example.connection.ConnectionFactory;
 import com.example.model.ViagemDetalhes;
+import com.example.service.FaturamentoService;
 import com.example.service.MotoristaVeiculoService;
 import com.example.service.MotoristasService;
 import com.example.service.PassageiroService;
@@ -58,6 +59,7 @@ public class App {
             ViagemService viagemService = new ViagemService(viagemDAO, passageiroDAO, motoristaVeiculoDAO, veiculoDAO);
             TipoPgtoService tipoPgtoService = new TipoPgtoService(tipoPagtoDAO);
             ViagemDetalhesService viagemDetalhesService = new ViagemDetalhesService(viagemDAO);
+            FaturamentoService faturamentoService = new FaturamentoService(viagemDAO);
             // Adicione aqui outros serviços conforme necessário
 
             while (true) {
@@ -71,6 +73,7 @@ public class App {
                 System.out.println("7 - Motorista do veículo");
                 System.out.println("8 - Tipo de pagamento");
                 System.out.println("9 - Buscar viagens por marca e data");
+                System.out.println("10 - Faturamentos");
                 System.out.println("0 - Sair");
 
                 int escolhaTabela = scanner.nextInt();
@@ -114,6 +117,10 @@ public class App {
 
                     case 9:
                         viagemDetalhesService.buscarViagensPorMarcaEData(scanner);
+                        break;
+
+                    case 10:
+                        faturamentoService.buscarMaioresFaturamentosPorMes(scanner);
                         break;
 
                     default:

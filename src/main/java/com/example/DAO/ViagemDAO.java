@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.connection.ConnectionFactory;
+import com.example.model.Faturamento;
 import com.example.model.Motoristas;
 import com.example.model.Veiculo;
 import com.example.model.Viagem;
@@ -29,9 +30,11 @@ public class ViagemDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } 
+    }
 
-    public void inserirViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, String local_orig_viag, String local_dest_viag, Date dt_hora_inicio, Date dt_hora_fim, int qtde_pass, String forma_pgta, double valor_pgta, String cancelam_mot, String cancelam_pass) {
+    public void inserirViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, String local_orig_viag,
+            String local_dest_viag, Date dt_hora_inicio, Date dt_hora_fim, int qtde_pass, String forma_pgta,
+            double valor_pgta, String cancelam_mot, String cancelam_pass) {
         String sql = "INSERT INTO viagem (cpf_pass_viag, cpf_mot_viag, placa_veic_viag, local_orig_viag, local_dest_viag, dt_hora_inicio, dt_hora_fim, qtde_pass, forma_pgta, valor_pgta, cancelam_mot,cancelam_pass) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_pass_viag);
@@ -58,7 +61,7 @@ public class ViagemDAO {
         List<Viagem> viagens = new ArrayList<>();
         String sql = "SELECT * FROM viagem";
         try (PreparedStatement statement = conexao.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+                ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 long cpf_pass_viag = resultSet.getLong("cpf_pass_viag");
                 long cpf_mot_viag = resultSet.getLong("cpf_mot_viag");
@@ -73,7 +76,9 @@ public class ViagemDAO {
                 String cancelam_mot = resultSet.getString("cancelam_mot");
                 String cancelam_pass = resultSet.getString("cancelam_pass");
 
-                Viagem viagem = new Viagem(cpf_pass_viag, cpf_mot_viag, placa_veic_viag, local_orig_viag, local_dest_viag, dt_hora_inicio, dt_hora_fim, qtde_pass, forma_pgta, valor_pgta, cancelam_mot,cancelam_pass);
+                Viagem viagem = new Viagem(cpf_pass_viag, cpf_mot_viag, placa_veic_viag, local_orig_viag,
+                        local_dest_viag, dt_hora_inicio, dt_hora_fim, qtde_pass, forma_pgta, valor_pgta, cancelam_mot,
+                        cancelam_pass);
                 viagens.add(viagem);
             }
         } catch (SQLException e) {
@@ -83,7 +88,9 @@ public class ViagemDAO {
         return viagens;
     }
 
-    public void alterarViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, String local_orig_viag, String local_dest_viag, Date dt_hora_inicio, Date dt_hora_fim, int qtde_pass, String forma_pgta, double valor_pgta, String cancelam_mot, String cancelam_pass){
+    public void alterarViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, String local_orig_viag,
+            String local_dest_viag, Date dt_hora_inicio, Date dt_hora_fim, int qtde_pass, String forma_pgta,
+            double valor_pgta, String cancelam_mot, String cancelam_pass) {
         String sql = "UPDATE viagem SET local_orig_viag = ?, local_dest_viag = ?, dt_hora_fim = ?, qtde_pass = ?, forma_pgta = ?, valor_pgta = ?, cancelam_mot = ?, cancelam_pass = ? WHERE cpf_pass_viag = ? AND cpf_mot_viag = ? AND placa_veic_viag = ? AND dt_hora_inicio = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setString(1, local_orig_viag);
@@ -98,7 +105,7 @@ public class ViagemDAO {
             statement.setLong(10, cpf_mot_viag);
             statement.setString(11, placa_veic_viag);
             statement.setDate(12, dt_hora_inicio);
-            
+
             int linhasAfetadas = statement.executeUpdate();
             if (linhasAfetadas > 0) {
                 System.out.println("Viagem atualizada com sucesso!");
@@ -111,7 +118,7 @@ public class ViagemDAO {
         }
     }
 
-    public void excluirViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, Date dt_hora_inicio){
+    public void excluirViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, Date dt_hora_inicio) {
         String sql = "DELETE FROM viagem WHERE cpf_pass_viag = ? AND cpf_mot_viag = ? AND placa_veic_viag = ? AND dt_hora_inicio = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_pass_viag);
@@ -130,7 +137,7 @@ public class ViagemDAO {
         }
     }
 
-    public boolean existeViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, Date dt_hora_inicio){
+    public boolean existeViagem(long cpf_pass_viag, long cpf_mot_viag, String placa_veic_viag, Date dt_hora_inicio) {
         String sql = "SELECT COUNT(*) AS total FROM viagem WHERE cpf_pass_viag = ? AND cpf_mot_viag = ? AND placa_veic_viag = ? AND dt_hora_incio = ?";
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, cpf_pass_viag);
@@ -152,14 +159,15 @@ public class ViagemDAO {
 
     public List<ViagemDetalhes> buscarViagensPorMarcaEData(String marca, LocalDate data) {
         List<ViagemDetalhes> viagens = new ArrayList<>();
-        String sql = "SELECT v.marca, v.placa, vg.local_orig_viag, vg.local_dest_viag, p1.nome AS nome_motorista, p2.nome AS nome_passageiro " +
-                     "FROM veiculos v " +
-                     "JOIN viagem vg ON v.placa = vg.placa_veic_viag " +
-                     "JOIN motoristas m ON vg.cpf_mot_viag = m.cpf_motorista " +
-                     "JOIN pessoas p1 ON m.cpf_motorista = p1.cpf_pessoa " +
-                     "JOIN passageiros p ON vg.cpf_pass_viag = p.cpf_passag " +
-                     "JOIN pessoas p2 ON p.cpf_passag = p2.cpf_pessoa " +
-                     "WHERE v.marca = ? AND vg.dt_hora_inicio = ?";
+        String sql = "SELECT v.marca, v.placa, vg.local_orig_viag, vg.local_dest_viag, p1.nome AS nome_motorista, p2.nome AS nome_passageiro "
+                +
+                "FROM veiculos v " +
+                "JOIN viagem vg ON v.placa = vg.placa_veic_viag " +
+                "JOIN motoristas m ON vg.cpf_mot_viag = m.cpf_motorista " +
+                "JOIN pessoas p1 ON m.cpf_motorista = p1.cpf_pessoa " +
+                "JOIN passageiros p ON vg.cpf_pass_viag = p.cpf_passag " +
+                "JOIN pessoas p2 ON p.cpf_passag = p2.cpf_pessoa " +
+                "WHERE v.marca = ? AND vg.dt_hora_inicio = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, marca);
@@ -174,6 +182,41 @@ public class ViagemDAO {
                 viagem.setLocalDestino(rs.getString("local_dest_viag"));
                 viagem.setNomeMotorista(rs.getString("nome_motorista"));
                 viagem.setNomePassageiro(rs.getString("nome_passageiro"));
+                viagens.add(viagem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return viagens;
+    }
+
+    public List<Faturamento> buscarMaioresFaturamentosPorMes(int ano, int mes) {
+        List<Faturamento> viagens = new ArrayList<>();
+        String dataInicio = String.format("%04d-%02d-01", ano, mes); // Primeiro dia do mês
+        String sql = "SELECT v.marca, v.placa, SUM(vg.valor_pgta) AS total_valor_pgta " +
+                "FROM veiculos v " +
+                "JOIN viagem vg ON v.placa = vg.placa_veic_viag " +
+                "JOIN motoristas m ON vg.cpf_mot_viag = m.cpf_motorista " +
+                "JOIN pessoas p1 ON m.cpf_motorista = p1.cpf_pessoa " +
+                "JOIN passageiros p ON vg.cpf_pass_viag = p.cpf_passag " +
+                "JOIN pessoas p2 ON p.cpf_passag = p2.cpf_pessoa " +
+                "WHERE vg.dt_hora_inicio >= ?::DATE " +
+                "  AND vg.dt_hora_inicio < (?::DATE + INTERVAL '1 MONTH') " +
+                "GROUP BY v.marca, v.placa " +
+                "ORDER BY total_valor_pgta DESC " +
+                "LIMIT 20";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setObject(1, dataInicio);
+            stmt.setObject(2, dataInicio);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Faturamento viagem = new Faturamento();
+                viagem.setMarca(rs.getString("marca"));
+                viagem.setPlaca(rs.getString("placa"));
+                viagem.setFaturamento(rs.getDouble("total_valor_pgta"));
+
                 viagens.add(viagem);
             }
         } catch (SQLException e) {
