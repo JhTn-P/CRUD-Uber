@@ -75,6 +75,7 @@ public class App {
                 System.out.println("9 - Buscar viagens por marca e data");
                 System.out.println("10 - Faturamentos");
                 System.out.println("11 - Faturamento detalhado");
+                System.out.println("12 - Média mensal de viagens separada por sexo");
                 System.out.println("0 - Sair");
 
                 int escolhaTabela = scanner.nextInt();
@@ -126,6 +127,11 @@ public class App {
 
                     case 11:
                         faturamentoService.buscarFaturamentoDetalhadoPorMes(scanner);
+                        break;
+
+                    case 12:
+                        faturamentoService.buscarMediaMensalViagensPorSexo(scanner);
+                        break;
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
                 }

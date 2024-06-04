@@ -12,6 +12,7 @@ import java.util.List;
 import com.example.connection.ConnectionFactory;
 import com.example.model.Faturamento;
 import com.example.model.FaturamentoDetalhado;
+import com.example.model.MediaMensalViagens;
 import com.example.model.Motoristas;
 import com.example.model.Veiculo;
 import com.example.model.Viagem;
@@ -273,5 +274,45 @@ public class ViagemDAO {
             e.printStackTrace();
         }
         return faturamentoDetalhadoList;
+    }
+
+    public List<MediaMensalViagens> buscarMediaMensalViagensPorSexo() {
+        List<MediaMensalViagens> mediasMensais = new ArrayList<>();
+        String sql = "SELECT " +
+                     "    EXTRACT(YEAR FROM vg.dt_hora_inicio) AS ano, " +
+                     "    EXTRACT(MONTH FROM vg.dt_hora_inicio) AS mes, " +
+                     "    p.sexo, " +
+                     "    COUNT(vg.cpf_pass_viag) AS total_viagens, " +
+                     "    ROUND( " +
+                     "        COUNT(vg.cpf_pass_viag) / NULLIF(SUM(COUNT(vg.cpf_pass_viag)) OVER (PARTITION BY EXTRACT(YEAR FROM vg.dt_hora_inicio), EXTRACT(MONTH FROM vg.dt_hora_inicio)), 0)::numeric, " +
+                     "        2 " +
+                     "    ) AS media_viagens " +
+                     "FROM " +
+                     "    viagem vg " +
+                     "JOIN " +
+                     "    passageiros pas ON vg.cpf_pass_viag = pas.cpf_passag " +
+                     "JOIN " +
+                     "    pessoas p ON pas.cpf_passag = p.cpf_pessoa " +
+                     "GROUP BY " +
+                     "    ano, mes, p.sexo " +
+                     "ORDER BY " +
+                     "    ano, mes, p.sexo";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                MediaMensalViagens mediaMensal = new MediaMensalViagens();
+                mediaMensal.setAno(rs.getInt("ano"));
+                mediaMensal.setMes(rs.getInt("mes"));
+                mediaMensal.setSexo(rs.getString("sexo"));
+                mediaMensal.setTotalViagens(rs.getInt("total_viagens"));
+                mediaMensal.setMediaViagens(rs.getDouble("media_viagens"));
+
+                mediasMensais.add(mediaMensal);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mediasMensais;
     }
 }

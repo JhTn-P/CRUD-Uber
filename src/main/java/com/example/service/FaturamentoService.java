@@ -7,8 +7,10 @@ import java.util.Scanner;
 import com.example.DAO.ViagemDAO;
 import com.example.util.ResultadoFaturamentoDetalhado;
 import com.example.util.ResultadoFaturamentoViagens;
+import com.example.util.ResultadoMediaMensalViagens;
 import com.example.model.Faturamento;
 import com.example.model.FaturamentoDetalhado;
+import com.example.model.MediaMensalViagens;
 
 public class FaturamentoService {
     private ViagemDAO viagemDAO;
@@ -63,6 +65,24 @@ public class FaturamentoService {
             System.out.println("Faturamentos Detalhados:");
             for (FaturamentoDetalhado faturamento : resultado.getFaturamentoDetalhado()) {
                 System.out.println(faturamento);
+            }
+        }
+    }
+
+    public ResultadoMediaMensalViagens buscarMediaMensalViagensPorSexo() {
+        List<MediaMensalViagens> mediasMensais = viagemDAO.buscarMediaMensalViagensPorSexo();
+        return new ResultadoMediaMensalViagens(mediasMensais);
+    }
+
+    public void buscarMediaMensalViagensPorSexo(Scanner scanner) {
+        ResultadoMediaMensalViagens resultado = buscarMediaMensalViagensPorSexo();
+
+        if (resultado.isEmpty()) {
+            System.out.println("Não foram encontradas médias mensais de viagens para os sexos.");
+        } else {
+            System.out.println("Médias Mensais de Viagens por Sexo:");
+            for (MediaMensalViagens media : resultado.getMediasMensais()) {
+                System.out.println(media);
             }
         }
     }
