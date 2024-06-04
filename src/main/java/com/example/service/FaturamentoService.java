@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.example.DAO.ViagemDAO;
+import com.example.util.ResultadoFaturamentoDetalhado;
 import com.example.util.ResultadoFaturamentoViagens;
 import com.example.model.Faturamento;
+import com.example.model.FaturamentoDetalhado;
 
 public class FaturamentoService {
     private ViagemDAO viagemDAO;
@@ -35,6 +37,31 @@ public class FaturamentoService {
         } else {
             System.out.println("Faturamentos: ");
             for(Faturamento faturamento : resultado.getFaturamento()){
+                System.out.println(faturamento);
+            }
+        }
+    }
+
+    public ResultadoFaturamentoDetalhado buscarFaturamentoDetalhadoPorMes(int ano, int mes) {
+        List<FaturamentoDetalhado> faturamentoDetalhado = viagemDAO.buscarFaturamentoDetalhadoPorMes(ano, mes);
+        return new ResultadoFaturamentoDetalhado(faturamentoDetalhado);
+    }
+
+    public void buscarFaturamentoDetalhadoPorMes(Scanner scanner) {
+        System.out.print("Digite o ano: ");
+        int ano = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Digite o mês: ");
+        int mes = scanner.nextInt();
+        scanner.nextLine();
+
+        ResultadoFaturamentoDetalhado resultado = buscarFaturamentoDetalhadoPorMes(ano, mes);
+
+        if (resultado.isEmpty()) {
+            System.out.println("Não foram encontrados faturamentos detalhados para este mês.");
+        } else {
+            System.out.println("Faturamentos Detalhados:");
+            for (FaturamentoDetalhado faturamento : resultado.getFaturamentoDetalhado()) {
                 System.out.println(faturamento);
             }
         }

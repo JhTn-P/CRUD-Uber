@@ -74,6 +74,7 @@ public class App {
                 System.out.println("8 - Tipo de pagamento");
                 System.out.println("9 - Buscar viagens por marca e data");
                 System.out.println("10 - Faturamentos");
+                System.out.println("11 - Faturamento detalhado");
                 System.out.println("0 - Sair");
 
                 int escolhaTabela = scanner.nextInt();
@@ -123,6 +124,8 @@ public class App {
                         faturamentoService.buscarMaioresFaturamentosPorMes(scanner);
                         break;
 
+                    case 11:
+                        faturamentoService.buscarFaturamentoDetalhadoPorMes(scanner);
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
                 }

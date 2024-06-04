@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.example.connection.ConnectionFactory;
 import com.example.model.Faturamento;
+import com.example.model.FaturamentoDetalhado;
 import com.example.model.Motoristas;
 import com.example.model.Veiculo;
 import com.example.model.Viagem;
@@ -223,5 +224,54 @@ public class ViagemDAO {
             e.printStackTrace();
         }
         return viagens;
+    }
+
+    public List<FaturamentoDetalhado> buscarFaturamentoDetalhadoPorMes(int ano, int mes) {
+        List<FaturamentoDetalhado> faturamentoDetalhadoList = new ArrayList<>();
+        String sql = "SELECT " +
+                "    p.nome AS nome_proprietario, " +
+                "    v.placa, " +
+                "    vg.forma_pgta AS tipo_pagamento, " +
+                "    SUM(vg.valor_pgta) AS valor_total_faturado, " +
+                "    ROUND(AVG(vg.valor_pgta), 2) AS valor_medio_faturamento " +
+                "FROM " +
+                "    viagem vg " +
+                "JOIN " +
+                "    veiculos v ON vg.placa_veic_viag = v.placa " +
+                "JOIN " +
+                "    motorista_veiculo mv ON v.placa = mv.placa_veiculo " +
+                "JOIN " +
+                "    motoristas m ON mv.cpf_motorista = m.cpf_motorista " +
+                "JOIN " +
+                "    proprietarios pr ON m.cpf_motorista = pr.cpf_prop " +
+                "JOIN " +
+                "    pessoas p ON pr.cpf_prop = p.cpf_pessoa " +
+                "WHERE " +
+                "    EXTRACT(YEAR FROM vg.dt_hora_inicio) = ? " +
+                "    AND EXTRACT(MONTH FROM vg.dt_hora_inicio) = ? " +
+                "GROUP BY " +
+                "    p.nome, v.placa, vg.forma_pgta " +
+                "ORDER BY " +
+                "    p.nome, v.placa, vg.forma_pgta";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, ano);
+            stmt.setInt(2, mes);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                FaturamentoDetalhado faturamentoDetalhado = new FaturamentoDetalhado();
+                faturamentoDetalhado.setNomeProprietario(rs.getString("nome_proprietario"));
+                faturamentoDetalhado.setPlacaVeiculo(rs.getString("placa"));
+                faturamentoDetalhado.setTipoPagamento(rs.getString("tipo_pagamento"));
+                faturamentoDetalhado.setValorTotalFaturado(rs.getDouble("valor_total_faturado"));
+                faturamentoDetalhado.setValorMedioFaturamento(rs.getDouble("valor_medio_faturamento"));
+
+                faturamentoDetalhadoList.add(faturamentoDetalhado);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return faturamentoDetalhadoList;
     }
 }
